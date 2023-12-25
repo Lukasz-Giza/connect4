@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39d0714c-5bf9-448c-9d61-36bdb5f72e0c" name="Changes" comment="caly projekt z dnia 24.12.2023">
+    <list default="true" id="39d0714c-5bf9-448c-9d61-36bdb5f72e0c" name="Changes" comment="added pos and neg diagonal line">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.venv/conect4_v2_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/.venv/conect4_v2_main.py" afterDir="false" />
     </list>
@@ -121,7 +121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703507862477</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="added pos and neg diagonal line">
+      <option name="closed" value="true" />
+      <created>1703523486854</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1703523486854</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +147,7 @@
     <MESSAGE value="ok" />
     <MESSAGE value="ok2" />
     <MESSAGE value="caly projekt z dnia 24.12.2023" />
-    <option name="LAST_COMMIT_MESSAGE" value="caly projekt z dnia 24.12.2023" />
+    <MESSAGE value="added pos and neg diagonal line" />
+    <option name="LAST_COMMIT_MESSAGE" value="added pos and neg diagonal line" />
   </component>
 </project>

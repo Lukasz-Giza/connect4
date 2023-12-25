@@ -4,6 +4,7 @@ import sys
 import random
 import math
 import time
+from pygame.locals import *
 
 # based on https://www.youtube.com/@KeithGalli
 
@@ -258,7 +259,7 @@ def draw_win_line(win_type, r ,c):
     elif win_type == 4: # negatively sloped diagonal
         pygame.draw.line(screen, lime, (c * square_size + square_size / 2, heigth - r * square_size - square_size / 2),(c * square_size + square_size / 2+square_size*3, heigth - r * square_size - square_size / 2 + square_size * 3),20)
 
-    print(r)
+    #print(r)
     pygame.display.update()
 
 
@@ -335,7 +336,7 @@ while not game_over:
         ai_time_start = time.time()
         # col = random.randint(0,col_count-1)
         #col = pick_best_move(board, ai_piece)
-        col, minimax_score = minimax (board, 1, -math.inf, math.inf, True)
+        col, minimax_score = minimax (board, 4, -math.inf, math.inf, True)
 
         if is_valid_location(board, col):
 
@@ -345,7 +346,7 @@ while not game_over:
             drop_piece(board, row, col, ai_piece)
             if winning_move(board, ai_piece):
                 win_type= winning_move(board, ai_piece)[1]
-                print(win_type)
+                #print(win_type)
                 # print("player 2 wins")
                 label = myfont.render("Gracz 2 wygrał", 1, yellow)
                 screen.blit(label, (40, 10))
@@ -370,14 +371,15 @@ while not game_over:
         else:
             draw_win_line(winning_move(board, ai_piece)[1], winning_move(board, ai_piece)[2],winning_move(board, ai_piece)[3])
 
-        # print(win_type)
-        pygame.time.wait(2000)
+        pygame.time.wait(2)
         #while event.type == pygame.MOUSEBUTTONDOWN:
-        # win_type = winning_move(board, player_piece)[1]
-        #while True:
+        pygame.event.clear()
+        while True:
            # print("c")
-           # if event.type == pygame.MOUSEBUTTONDOWN:
-               # print("d")
-              #  sys.exit()
+            event = pygame.event.wait()
+            if event.type == QUIT:
+                print("d")
+                pygame.quit()
+                sys.exit()
 
-        pygame.time.wait(2000)
+        pygame.time.wait(2)
