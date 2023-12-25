@@ -40,6 +40,15 @@ heigth = (row_count + 1) * square_size
 size = (width, heigth)
 radius = int(square_size / 2 - 5)
 
+game_over = False
+pygame.init()
+screen = pygame.display.set_mode(size)
+
+
+pygame.display.update()
+myfont = pygame.font.SysFont("monospace", 75)
+turn = random.randint(player, ai)
+
 
 def create_board():
     board = np.zeros((row_count, col_count))
@@ -262,19 +271,76 @@ def draw_win_line(win_type, r ,c):
     #print(r)
     pygame.display.update()
 
+rec1= (square_size, square_size, 5*square_size, square_size)
+rec2= (1*square_size, 3*square_size, 5*square_size, square_size)
+rec3= (1*square_size, 5*square_size, 5*square_size, square_size)
 
+button_rect1 = pygame.Rect(rec1)
+button_rect2 = pygame.Rect(rec2)
+button_rect3 = pygame.Rect(rec3)
+
+myfirstfont = pygame.font.SysFont("monospace", 35)
+
+def draw_select_level():
+    pygame.draw.rect(screen, black, (0, 0, width, heigth))
+    label = myfirstfont.render("Wybierz poziom trudności:", 1, red)
+    screen.blit(label, (80, 10),)
+
+    pygame.draw.rect(screen, (blue), rec1)
+    pygame.draw.rect(screen, (yellow), rec2)
+    pygame.draw.rect(screen, (red), rec3)
+
+    pygame.display.update()
+    pygame.time.wait(1000)
+
+
+def on_mouse_button_down(event):
+    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect1.collidepoint(event.pos):
+        print("Button 1 clicked!")
+        level=1
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect2.collidepoint(event.pos):
+        print("Button 2 clicked!")
+        level=3
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect3.collidepoint(event.pos):
+        print("Button 3 clicked!")
+        level=6
+    return level
+
+
+def black_screen():
+    pygame.draw.rect(screen, black, (0, 0, width, heigth))
+    pygame.display.update()
+    pygame.time.wait(0)
+    return
+
+draw_select_level()
+level = 0
+
+while level==0: #select level
+
+    for event in pygame.event.get():
+
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        # Check for the mouse button down event
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Call the on_mouse_button_down() function
+            on_mouse_button_down(event)
+            level = on_mouse_button_down(event)
+            #print(level)
+            if level !=0:
+                break
+    # Update the game state
+
+    # Draw the game screen
+    pygame.display.update()
+
+
+black_screen()
 board = create_board()
-game_over = False
-
-pygame.init()
-
-screen = pygame.display.set_mode(size)
 draw_board(board)
-pygame.display.update()
-
-myfont = pygame.font.SysFont("monospace", 75)
-
-turn = random.randint(player, ai)
 
 while not game_over:
     for event in pygame.event.get():
@@ -336,7 +402,7 @@ while not game_over:
         ai_time_start = time.time()
         # col = random.randint(0,col_count-1)
         #col = pick_best_move(board, ai_piece)
-        col, minimax_score = minimax (board, 4, -math.inf, math.inf, True)
+        col, minimax_score = minimax (board, level, -math.inf, math.inf, True)
 
         if is_valid_location(board, col):
 
