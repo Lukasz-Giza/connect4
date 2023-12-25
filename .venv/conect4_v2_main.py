@@ -371,15 +371,12 @@ while not game_over:
         else:
             draw_win_line(winning_move(board, ai_piece)[1], winning_move(board, ai_piece)[2],winning_move(board, ai_piece)[3])
 
-        pygame.time.wait(2)
-        #while event.type == pygame.MOUSEBUTTONDOWN:
+        pygame.time.wait(1)
         pygame.event.clear()
         while True:
-           # print("c")
             event = pygame.event.wait()
             if event.type == QUIT:
-                print("d")
                 pygame.quit()
                 sys.exit()
 
-        pygame.time.wait(2)
+        pygame.time.wait(1)
