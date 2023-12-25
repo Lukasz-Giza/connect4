@@ -251,10 +251,14 @@ def draw_board(board):
 def draw_win_line(win_type, r ,c):
     if win_type == 1:  # horizontal
         pygame.draw.line(screen, lime, (c*square_size+square_size/2,heigth- r*square_size-square_size/2),(c*square_size+square_size/2+square_size*3,heigth-r*square_size-square_size/2),20)
-    elif win_type == 2:
+    elif win_type == 2: #vert
         pygame.draw.line(screen, lime, (c*square_size+square_size/2,heigth- r*square_size-square_size/2), (c*square_size+square_size/2,heigth-r*square_size-square_size/2-square_size*3),20)
+    elif win_type == 3: # positively sloped diagonal
+        pygame.draw.line(screen, lime, (c * square_size+square_size/2, heigth-r * square_size - square_size / 2),(c * square_size + square_size / 2+square_size*3,heigth - r * square_size - square_size / 2 - square_size * 3), 20)
+    elif win_type == 4: # negatively sloped diagonal
+        pygame.draw.line(screen, lime, (c * square_size + square_size / 2, heigth - r * square_size - square_size / 2),(c * square_size + square_size / 2+square_size*3, heigth - r * square_size - square_size / 2 + square_size * 3),20)
 
-        print(r)
+    print(r)
     pygame.display.update()
 
 
