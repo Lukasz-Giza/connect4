@@ -279,30 +279,39 @@ button_rect1 = pygame.Rect(rec1)
 button_rect2 = pygame.Rect(rec2)
 button_rect3 = pygame.Rect(rec3)
 
-myfirstfont = pygame.font.SysFont("monospace", 35)
+myfirstfont = pygame.font.SysFont("monospace", 45)
 
 def draw_select_level():
     pygame.draw.rect(screen, black, (0, 0, width, heigth))
     label = myfirstfont.render("Wybierz poziom trudności:", 1, red)
-    screen.blit(label, (80, 10),)
+    screen.blit(label, (20, 10),)
 
+    label = myfirstfont.render("Poziom 1", 1, black)
     pygame.draw.rect(screen, (blue), rec1)
+    screen.blit(label, (5*rec1[0]/2,5*rec1[1]/4))
+
+    label = myfirstfont.render("Poziom 2", 1, black)
     pygame.draw.rect(screen, (yellow), rec2)
+    screen.blit(label, (5*rec2[0]/2,13*rec2[1]/12))
+
+    label = myfirstfont.render("Poziom 3", 1, black)
     pygame.draw.rect(screen, (red), rec3)
+    screen.blit(label, (5*rec3[0]/2,21*rec3[1]/20))
 
     pygame.display.update()
-    pygame.time.wait(1000)
+    pygame.time.wait(1)
 
 
 def on_mouse_button_down(event):
+    level=0
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect1.collidepoint(event.pos):
-        print("Button 1 clicked!")
+        #print("Button 1 clicked!")
         level=1
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect2.collidepoint(event.pos):
-        print("Button 2 clicked!")
+        #print("Button 2 clicked!")
         level=3
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect3.collidepoint(event.pos):
-        print("Button 3 clicked!")
+        #print("Button 3 clicked!")
         level=6
     return level
 
@@ -376,8 +385,8 @@ while not game_over:
                     if winning_move(board, player_piece):
 
                         # print("player 1 wins")
-                        label = myfont.render("Gracz 1 wygrał", 1, red)
-                        screen.blit(label, (40, 10))
+                        label = myfont.render("Wygrałaś/eś!", 1, red)
+                        screen.blit(label, (50, 10))
                         game_over = True
 
                     turn += 1
@@ -400,13 +409,16 @@ while not game_over:
 
     if turn == ai and not game_over:
         ai_time_start = time.time()
+        label = myfont.render("SI myśli...", 1, yellow)
+        screen.blit(label, (120, 10))
+        pygame.display.update()
         # col = random.randint(0,col_count-1)
         #col = pick_best_move(board, ai_piece)
         col, minimax_score = minimax (board, level, -math.inf, math.inf, True)
 
         if is_valid_location(board, col):
 
-            pygame.time.wait(1)
+            pygame.time.wait(0)
 
             row = get_next_open_row(board, col)
             drop_piece(board, row, col, ai_piece)
@@ -414,8 +426,9 @@ while not game_over:
                 win_type= winning_move(board, ai_piece)[1]
                 #print(win_type)
                 # print("player 2 wins")
-                label = myfont.render("Gracz 2 wygrał", 1, yellow)
-                screen.blit(label, (40, 10))
+                pygame.draw.rect(screen, black, (0, 0, width, square_size))
+                label = myfont.render("SI wygrała", 1, yellow)
+                screen.blit(label, (120, 10))
                 game_over = True
 
             # print_board(board)
@@ -436,6 +449,14 @@ while not game_over:
 
         else:
             draw_win_line(winning_move(board, ai_piece)[1], winning_move(board, ai_piece)[2],winning_move(board, ai_piece)[3])
+
+        rec_end = (6 * square_size, 0 * square_size, 1 * square_size, square_size)
+        button_rec_end = pygame.Rect(rec_end)
+        label = myfirstfont.render("OK", 1, black)
+        pygame.draw.rect(screen, (red), rec_end)
+        screen.blit(label, (2 * rec_end[0] / 2+1*square_size/4, 3*square_size/9))
+        pygame.display.update()
+
 
         pygame.time.wait(1)
         pygame.event.clear()
