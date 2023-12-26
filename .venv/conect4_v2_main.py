@@ -6,12 +6,10 @@ import math
 import time
 from pygame.locals import *
 
-# based on https://www.youtube.com/@KeithGalli
+levels = (1 , 2, 6)
 
 row_count = 6
 col_count = 7
-# test
-#tsest
 
 red = (255, 0, 0)
 black = (0, 0, 0)
@@ -26,6 +24,7 @@ ai = 1
 ai_time=0
 player_time=0
 player_time_start = 0
+player_turn = 0
 
 empty = 0
 window_length = 4
@@ -44,34 +43,27 @@ game_over = False
 pygame.init()
 screen = pygame.display.set_mode(size)
 
-
 pygame.display.update()
 myfont = pygame.font.SysFont("monospace", 75)
 turn = random.randint(player, ai)
-
 
 def create_board():
     board = np.zeros((row_count, col_count))
     return board
 
-
 def drop_piece(board, row, col, piece):
     board[row][col] = piece
 
-
 def is_valid_location(board, col):
     return board[row_count - 1][col] == 0
-
 
 def get_next_open_row(board, col):
     for r in range(row_count):
         if board[r][col] == 0:
             return r
 
-
 def print_board(board):
     print(np.flip(board, 0))
-
 
 def winning_move(board, piece):
     # horizontal
@@ -119,9 +111,13 @@ def evaluate_window(window,piece):
         score += 5
     elif window.count(piece) == 2 and window.count(empty) == 2:
         score += 2
-    if window.count(opp_piece) ==3 and window.count(empty) ==1:
+    elif window.count(opp_piece) ==3 and window.count(empty) ==1:
         score -= 4
+    #wyzej byl if a nizej bez elif
+    elif window.count(empty) == 3 and window.count(piece) == 1:
+        score += 1
     return score
+
 def score_position(board, piece):
 
     score = 0
@@ -129,8 +125,6 @@ def score_position(board, piece):
     center_array = [int(i) for i in list(board[:,col_count//2])]
     center_count = center_array.count(piece)
     score += center_count * 3
-
-
 
     # horizontal score
     for r in range(row_count):
@@ -141,7 +135,6 @@ def score_position(board, piece):
             score += evaluate_window(window, piece)
 
     # vert score
-
     for c in range(col_count):
         col_array = [int(i) for i in list(board[:, c])]
 
@@ -170,7 +163,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
             if winning_move(board, ai_piece) :
                 return (None, 100000000000000)
             elif winning_move(board, player_piece):
-                return (None, - 100000000000000)
+                return (None, -10000000000000)
             else: #no more valid moves
                 return (None, 0)
         else: #depth is zeor
@@ -207,7 +200,6 @@ def minimax(board, depth, alpha, beta, maximizing_player):
             if alpha >= beta:
                 break
         return column, value
-
 
 
 def is_terminal_node(board):
@@ -306,13 +298,13 @@ def on_mouse_button_down(event):
     level=0
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect1.collidepoint(event.pos):
         #print("Button 1 clicked!")
-        level=1
+        level=levels[0]
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect2.collidepoint(event.pos):
         #print("Button 2 clicked!")
-        level=3
+        level=levels[1]
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rect3.collidepoint(event.pos):
         #print("Button 3 clicked!")
-        level=6
+        level=levels[2]
     return level
 
 
@@ -321,6 +313,30 @@ def black_screen():
     pygame.display.update()
     pygame.time.wait(0)
     return
+
+def end_screen():
+    pygame.draw.rect(screen, black, (0, 0, width, heigth))
+    if winning_move(board, ai_piece):
+        label = myfirstfont.render("SI wygrała ", 1, red)
+        screen.blit(label, (square_size/5, square_size/5),)
+    if winning_move(board, player_piece):
+        label = myfirstfont.render("Wygrałaś/eś, gratuluje!", 1, red)
+        screen.blit(label, (square_size/5, square_size/5),)
+
+    label = myfirstfont.render(("czas ruchu SI wynosi:"),1, red)
+    screen.blit(label, (square_size/5,3*square_size/2))
+    label = myfirstfont.render((str(int(ai_time))+ " sekund"),1, red)
+    screen.blit(label, (square_size/5,6*square_size/3))
+
+    label = myfirstfont.render(("Twój czas ruchu wynosi:"),1, red)
+    screen.blit(label, (square_size/5,6*square_size/2))
+    label = myfirstfont.render((str(int(player_time))+ " sekund"),1, red)
+    screen.blit(label, (square_size/5,21*square_size/6))
+
+    pygame.display.update()
+    pygame.time.wait(0)
+    pass
+
 
 draw_select_level()
 level = 0
@@ -351,11 +367,22 @@ black_screen()
 board = create_board()
 draw_board(board)
 
+if level == levels[2]:
+    turn= ai
+
 while not game_over:
+
     for event in pygame.event.get():
         if player_time_start ==0:
             player_time_start = time.time()
         #print(player_time_start)
+        if player_turn == 0:
+            pygame.draw.rect(screen, black, (0, 0, width, square_size))
+            label = myfont.render("Twoja kolej", 1, yellow)
+            screen.blit(label, (120, 10))
+            pygame.display.update()
+            player_turn=1
+
 
         if event.type == pygame.QUIT:
             sys.exit()
@@ -383,7 +410,6 @@ while not game_over:
                     drop_piece(board, row, col, player_piece)
 
                     if winning_move(board, player_piece):
-
                         # print("player 1 wins")
                         label = myfont.render("Wygrałaś/eś!", 1, red)
                         screen.blit(label, (50, 10))
@@ -422,6 +448,7 @@ while not game_over:
 
             row = get_next_open_row(board, col)
             drop_piece(board, row, col, ai_piece)
+            player_turn = 0
             if winning_move(board, ai_piece):
                 win_type= winning_move(board, ai_piece)[1]
                 #print(win_type)
@@ -458,9 +485,14 @@ while not game_over:
         pygame.display.update()
 
 
+
         pygame.time.wait(1)
         pygame.event.clear()
         while True:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rec_end.collidepoint(event.pos):
+                print("Button ok clicked!")
+                end_screen()
+
             event = pygame.event.wait()
             if event.type == QUIT:
                 pygame.quit()
