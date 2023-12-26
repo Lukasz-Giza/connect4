@@ -317,7 +317,7 @@ def black_screen():
 def end_screen():
     pygame.draw.rect(screen, black, (0, 0, width, heigth))
     if winning_move(board, ai_piece):
-        label = myfirstfont.render("SI wygrała ", 1, red)
+        label = myfirstfont.render("SI wygrała! ", 1, red)
         screen.blit(label, (square_size/5, square_size/5),)
     if winning_move(board, player_piece):
         label = myfirstfont.render("Wygrałaś/eś, gratuluje!", 1, red)
@@ -333,13 +333,29 @@ def end_screen():
     label = myfirstfont.render((str(int(player_time))+ " sekund"),1, red)
     screen.blit(label, (square_size/5,21*square_size/6))
 
+    rec_reload = (1 * square_size/2, 5 * square_size, 6 * square_size, square_size)
+    button_rec_reload = pygame.Rect(rec_reload)
+    label = myfirstfont.render("Zacznij gre od nowa!", 1, black)
+    pygame.draw.rect(screen, (red), rec_reload)
+    screen.blit(label, (2 * rec_reload[0] / 2 + 1 * square_size / 4, 21 * square_size / 4))
+
     pygame.display.update()
-    pygame.time.wait(0)
-    pass
+    pygame.event.clear()
+
+    ##while True:
+        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rec_reload.collidepoint(event.pos):
+            #print("reaload")
+            #break
+
+
+
 
 
 draw_select_level()
 level = 0
+
+
+
 
 while level==0: #select level
 
@@ -363,14 +379,25 @@ while level==0: #select level
     pygame.display.update()
 
 
+
+
+
+
+
 black_screen()
 board = create_board()
 draw_board(board)
 
 if level == levels[2]:
-    turn= ai
+    turn = ai
+
+
+
+
 
 while not game_over:
+#while True:
+
 
     for event in pygame.event.get():
         if player_time_start ==0:
@@ -484,18 +511,18 @@ while not game_over:
         screen.blit(label, (2 * rec_end[0] / 2+1*square_size/4, 3*square_size/9))
         pygame.display.update()
 
-
-
         pygame.time.wait(1)
         pygame.event.clear()
+
         while True:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rec_end.collidepoint(event.pos):
-                print("Button ok clicked!")
+                #print("Button ok clicked!")
                 end_screen()
+                break
 
             event = pygame.event.wait()
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
-        pygame.time.wait(1)
+        pygame.time.wait(5000)
