@@ -340,12 +340,17 @@ def end_screen():
     screen.blit(label, (2 * rec_reload[0] / 2 + 1 * square_size / 4, 21 * square_size / 4))
 
     pygame.display.update()
+    pygame.time.wait(1)
     pygame.event.clear()
 
-    ##while True:
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rec_reload.collidepoint(event.pos):
-            #print("reaload")
-            #break
+    while True:
+        event = pygame.event.wait()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rec_reload.collidepoint(event.pos):
+            pygame.quit()
+            sys.exit()
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
 
 
 
