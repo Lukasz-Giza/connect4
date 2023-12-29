@@ -5,8 +5,11 @@ import random
 import math
 import time
 from pygame.locals import *
+import os
 
-levels = (1 , 2, 6)
+#project based on work of Keith Galli
+
+levels = (1 ,2 , 5)
 
 row_count = 6
 col_count = 7
@@ -347,7 +350,9 @@ def end_screen():
         event = pygame.event.wait()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and button_rec_reload.collidepoint(event.pos):
             pygame.quit()
-            sys.exit()
+            #sys.exit()
+            os.system('python conect4_v2_main.py')
+            break
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -456,7 +461,7 @@ while not game_over:
                     player_time_start=0
                     #print(player_time)
 
-                    # print_board(board)
+                    #print_board(board)
                     draw_board(board)
 
                 # print(selection)
@@ -490,7 +495,7 @@ while not game_over:
                 screen.blit(label, (120, 10))
                 game_over = True
 
-            # print_board(board)
+            print_board(board)
             draw_board(board)
             turn += 1
             turn = turn % 2
@@ -500,8 +505,8 @@ while not game_over:
             #print (ai_time)
 
     if game_over:
-        print("czas ruchu SI wynosi", int(ai_time), "sekund")
-        print("czas ruchu Gracza wynosi", int(player_time) ,"sekund")
+        #print("czas ruchu SI wynosi", int(ai_time), "sekund")
+        #print("czas ruchu Gracza wynosi", int(player_time) ,"sekund")
 
         if turn == ai:
             draw_win_line(winning_move(board, player_piece)[1], winning_move(board, player_piece)[2],winning_move(board, player_piece)[3])
@@ -530,4 +535,4 @@ while not game_over:
                 pygame.quit()
                 sys.exit()
 
-        pygame.time.wait(5000)
+        pygame.time.wait(5)
