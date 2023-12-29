@@ -328,12 +328,12 @@ def end_screen():
 
     label = myfirstfont.render(("czas ruchu SI wynosi:"),1, red)
     screen.blit(label, (square_size/5,3*square_size/2))
-    label = myfirstfont.render((str(int(ai_time))+ " sekund"),1, red)
+    label = myfirstfont.render((str(round(ai_time,2))+ " sekund"),1, red)
     screen.blit(label, (square_size/5,6*square_size/3))
 
     label = myfirstfont.render(("Twój czas ruchu wynosi:"),1, red)
     screen.blit(label, (square_size/5,6*square_size/2))
-    label = myfirstfont.render((str(int(player_time))+ " sekund"),1, red)
+    label = myfirstfont.render((str(round(player_time,2))+ " sekund"),1, red)
     screen.blit(label, (square_size/5,21*square_size/6))
 
     rec_reload = (1 * square_size/2, 5 * square_size, 6 * square_size, square_size)
